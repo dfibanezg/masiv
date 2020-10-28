@@ -98,7 +98,12 @@ namespace Masiv.Controllers
             catch (Exception) { return false; }
         }
 
-        private bool IsValidColorNumber(bool red, sbyte number) => (number % 2) == 0 ? red : !red;
+        private bool IsValidColorNumber(bool red, sbyte? number)
+        {
+            if (number == null)
+                return true;
+            return (number % 2) == 0 ? red : !red;
+        }
 
         [HttpPut("closeroulette/{id}")]
         public async Task<IActionResult> CloseRoulette(string id)
@@ -114,7 +119,7 @@ namespace Masiv.Controllers
             roulette.IsOpen = false;
             await _rouletteService.Update(roulette);
 
-            roulette.WinnerNumber = (sbyte)new Random().Next(-1, 37);
+            roulette.WinnerNumber = (sbyte)new Random().Next(0, 37);
             roulette.IsRedWinnerColor = (roulette.WinnerNumber % 2) == 0;
 
             foreach (Bet bet in roulette.Bets)

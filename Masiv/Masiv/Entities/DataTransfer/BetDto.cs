@@ -8,7 +8,7 @@ namespace Masiv.Entities.DataTransfer
         public bool Red { get; set; }
 
         [JsonProperty("number")]
-        public sbyte Number { get; set; }
+        public sbyte? Number { get; set; }
 
         [JsonProperty("money")]
         public float Money { get; set; }
