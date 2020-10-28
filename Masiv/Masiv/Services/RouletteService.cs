@@ -1,7 +1,11 @@
-﻿using Masiv.Entities.Business;
+﻿using Azure;
+using Azure.Storage.Blobs.Models;
+using Masiv.Entities.Business;
 using Masiv.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Masiv.Services
@@ -27,5 +31,17 @@ namespace Masiv.Services
             await Add(roulette.Id.ToString(), roulette);
             return roulette.Id;
         }
+
+        public async Task<ICollection<Roulette>> GetList()
+        {
+            Pageable<BlobItem> blobs = _containerClient.GetBlobs();
+            List<Roulette> roulettes = new List<Roulette>();
+
+            foreach (BlobItem blob in blobs)
+                roulettes.Add(await base.Get(blob.Name.Replace(".json", string.Empty)));
+
+            return roulettes;
+        }
+
     }
 }

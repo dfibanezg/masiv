@@ -143,5 +143,8 @@ namespace Masiv.Controllers
 
             return Ok(roulette);
         }
+
+        [HttpGet("getroulettes")]
+        public async Task<IActionResult> GetRoulettes() => Ok(await _rouletteService.GetList());
     }
 }
